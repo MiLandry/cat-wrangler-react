@@ -3,8 +3,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { withRouter } from "react-router-dom";
 
 class Auth0ProviderWithHistory extends React.Component {
-  domain = process.env.REACT_APP_AUTH0_DOMAIN;
-  clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+  domain = 'dev-l9nr9s-8.us.auth0.com';
+  clientId = 'Te33Ar7pFRRFzbPy3RWw5UvKR1jmaSCL';
   audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 
   onRedirectCallback = (appState) => {
