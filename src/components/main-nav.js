@@ -14,6 +14,14 @@ class MainNav extends React.Component {
           Home
         </NavLink>
         <NavLink
+          to="/new-event"
+          exact
+          className="nav-link"
+          activeClassName="router-link-exact-active"
+        >
+          Create New Event
+        </NavLink>
+        <NavLink
           to="/profile"
           exact
           className="nav-link"
