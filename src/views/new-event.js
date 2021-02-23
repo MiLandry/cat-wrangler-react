@@ -1,59 +1,57 @@
-import React from "react";
+import React from 'react';
 import { withAuth0 } from "@auth0/auth0-react";
+import { useOperation, useOperationMethod } from 'react-openapi-client';
 
-class NewEvent extends React.Component {
-  state = {
-    message: "",
-  };
+const NewEvent = (props) => {
+  // debugger
+  // const { loading, data, error } = useOperation('getEvent', props.id);
 
-  serverUrl = process.env.REACT_APP_SERVER_URL;
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-  // callApi = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `${this.serverUrl}/api/messages/public-message`
-  //     );
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
+  // debugger
 
-  //     const responseData = await response.json();
+  // createEvent(null, {
+  //   "startDateTime": "2000-01-23T04:56:07.000+00:00",
+  //   "name": "board game christmas get together",
+  //   "id": 0
+  // })
 
-  //     this.setState({ message: responseData.message });
-  //   } catch (error) {
-  //     this.setState({ message: error.message });
-  //   }
-  // };
 
-  // callSecureApi = async () => {
-  //   const { getAccessTokenSilently } = this.props.auth0;
-  //   const token = await getAccessTokenSilently();
-
-  //   try {
-  //     const response = await fetch(
-  //       `${this.serverUrl}/api/messages/protected-message`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     const responseData = await response.json();
-
-  //     this.setState({ message: responseData.message });
-  //   } catch (error) {
-  //     this.setState({ message: error.message });
-  //   }
-  // };
-
-  render() {
-    return (
-      <div>
-        <h1>Create New Event</h1>
-        <p>
-          hello world
-        </p>
-      </div>
-    );
+  const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
+  const cb = () => {
+    // debugger
+    console.log('data')
+    createEvent(null, {
+      "startDateTime": "2000-01-23T04:56:07.000+00:00",
+      "name": "board game christmas get together",
+      "id": 0
+    })
   }
-}
 
+  return (
+    <div className="App">
+      hello
+      <button onClick={cb}>
+        click me
+      </button>
+  </div>
+    // <div className="App">
+    //   <img src={data.image} alt={data.name} />
+    //   <h3>{data.name}</h3>
+    //   <ul>
+    //     <li>
+    //       <strong>id:</strong> {data.id}
+    //     </li>
+    //     <li>
+    //       <strong>status:</strong> {data.status}
+    //     </li>
+    //   </ul>
+    // </div>
+  );
+};
 export default withAuth0(NewEvent);
