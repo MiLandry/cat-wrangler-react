@@ -1,11 +1,12 @@
 import React from 'react';
 import { withAuth0 } from "@auth0/auth0-react";
 import { useOperation, useOperationMethod } from 'react-openapi-client';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import DateTimePicker from 'react-datetime-picker'
 
 
 const NewEvent = (props) => {
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, watch, errors, control } = useForm();
   const onSubmit = data => {
     console.log(data);
   }
@@ -22,7 +23,7 @@ const NewEvent = (props) => {
     })
   }
 
-  console.log(watch("example"));
+  console.log(watch("event$name"));
   // watch input value by passing the name of it
 //   Name,
 // date
@@ -36,7 +37,13 @@ const NewEvent = (props) => {
       <input name="event$name" ref={register({ required: true })} />
       {errors.event$name && <span>Event name is required</span>}
       <label>Start date</label>
-      <input name="event$startDateTime" ref={register({ required: true })} />
+      <Controller
+        name="event$startDateTime"
+        control={control}
+        defaultValue=""
+        render={({ onChange, value }) => <DateTimePicker onChange={onChange} value={value} />}
+      />
+
       {errors.event$startDateTime && <span>Pick a start time</span>}
       <input type="submit" />
     </form>
