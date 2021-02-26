@@ -7,12 +7,18 @@ import DateTimePicker from 'react-datetime-picker'
 
 const NewEvent = (props) => {
   const { register, handleSubmit, watch, errors, control } = useForm();
+  const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
   const onSubmit = data => {
     console.log(data);
+    createEvent(null, {
+      "startDateTime": data.event$startDateTime,
+      "name": data.event$name,
+      "id": 0
+    })
+
   }
 
 
-  const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
   const cb = () => {
     // debugger
     console.log('data')
