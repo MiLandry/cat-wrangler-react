@@ -102,25 +102,24 @@ https://create-react-app.dev/docs/advanced-configuration/
 ## Implementation status
 
 
-🟩 Authorization
-🟩 Authentication
-🟩 Navigation and Routing
-Community Component library : look at bit.dev
-  🟩home screen
-    🟩settings screen
-    🟩dashboard
-    search tools
-    feed
-🟧 Environment variables (env library)
-🟩 UI UX
-CRUD Support
- Declarative forms
-Search and Query
-Workflow engine Support
-Container ready
-Cloud Ready
-scripted development builds, starts, and debugging
-hot reloading
-dependency management
-
-
+🟩 Authorization\
+🟩 Authentication\
+🟩 Navigation and Routing\
+  Community Component library : look at bit.dev\
+  🟩home screen\
+    🟩settings screen\
+    🟩dashboard\
+    🟥search tools\
+    🟥feed\
+🟧 Environment variables (env library)\
+🟩 UI UX\
+🟥 CRUD Support\
+🟥 Declarative forms\
+🟥 Search and Query\
+🟥 Workflow engine Support\
+🟥 Container ready\
+🟥 Cloud Ready\
+🟥 scripted development builds, starts, and debugging\
+🟥 hot reloading\
+🟥 dependency management\
+🟥 linting\
