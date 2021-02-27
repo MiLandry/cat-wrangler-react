@@ -1,16 +1,13 @@
-# cat_wrangler
-
-
-
+# Cat Wrangler, a Landry Specification Reference Implementation
 
 A mobile app that can facilitate users to create and orchestrate events and gatherings amongst friends, with features to request rsvps, statuses, supplies, and to contact attendees.
 
+This is a reference implementation of the   [Landry Enterprise Specification](https://github.com/MiLandry/Landry-Enterprise-Specification)
+
+
 ## Get Started
 
-
-
 Install the client project dependencies:
-
 
 
 ```bash
@@ -40,47 +37,28 @@ The application runs by on port `4040` to mitigate conflicting with other client
 Visit [`http://localhost:4040/`](http://localhost:4040/) to access the starter application.
 
 
+## Library docs
 
-
-
-
-
-
-
-  ## Landry enterprise specification status
-  [Specification](https://github.com/MiLandry/Landry-Enterprise-Specification)
-
-
-
-
-
-
-
-
-
-## Authentication : Oauth
+### Auth, Auth : Oauth
 
 https://auth0.com/blog/get-started-with-flutter-authentication/
 
 
 
-## Swagger
-
-https://app.swaggerhub.com/home
-
-https://app.swaggerhub.com/apis-docs/guevarravirtual/cat-wrangler/1.0.0
+### Open Api Document
+can be found at https://app.swaggerhub.com/apis-docs/guevarravirtual/cat-wrangler/1.0.0
 
 
 
-## Environment variables
+### Environment variables
 
 https://create-react-app.dev/docs/advanced-configuration/
 
+### Linting and hooks
+dev tool called husky is an easy way to set up precommit hooks on the developer machine https://typicode.github.io/husky/#/
 
-
-
-
-
+### Unit tests
+Jest
 
 
 ## Implementation tracking legend
@@ -119,11 +97,12 @@ https://create-react-app.dev/docs/advanced-configuration/
 🟥 Workflow engine Support\
 🟥 Container ready\
 🟥 Cloud Ready\
-🟥 scripted development builds, starts, and debugging\
-🟥 hot reloading\
-🟥 dependency management\
-🟥 linting\
-  dev tool called husky is an easy way to set up precommit hooks on the developer machine https://typicode.github.io/husky/#/
+🟩 scripted development builds, starts, and debugging\
+🟩 Unit test framework
+🟩 hot reloading\
+🟩 dependency management\
+🟩 linting\
+
 
 
 
