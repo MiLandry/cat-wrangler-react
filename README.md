@@ -123,3 +123,9 @@ https://create-react-app.dev/docs/advanced-configuration/
 🟥 hot reloading\
 🟥 dependency management\
 🟥 linting\
+  dev tool called husky is an easy way to set up precommit hooks on the developer machine https://typicode.github.io/husky/#/
+
+
+
+
+

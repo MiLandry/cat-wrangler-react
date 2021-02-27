@@ -1,13 +1,15 @@
 import React from 'react';
 import { withAuth0 } from "@auth0/auth0-react";
-import { useOperation, useOperationMethod } from 'react-openapi-client';
+import { useOperationMethod } from 'react-openapi-client';
+// import { useOperation, useOperationMethod } from 'react-openapi-client';
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from 'react-datetime-picker'
 
 
 const NewEvent = (props) => {
   const { register, handleSubmit, watch, errors, control } = useForm();
-  const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
+  const [createEvent] = useOperationMethod('addEvent');
+  // const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
   const onSubmit = data => {
     console.log(data);
     createEvent(null, {
@@ -19,15 +21,15 @@ const NewEvent = (props) => {
   }
 
 
-  const cb = () => {
-    // debugger
-    console.log('data')
-    createEvent(null, {
-      "startDateTime": "2000-01-23T04:56:07.000+00:00",
-      "name": "board game christmas get together",
-      "id": 0
-    })
-  }
+  // const cb = () => {
+  //   // debugger
+  //   console.log('data')
+  //   createEvent(null, {
+  //     "startDateTime": "2000-01-23T04:56:07.000+00:00",
+  //     "name": "board game christmas get together",
+  //     "id": 0
+  //   })
+  // }
 
   console.log(watch("event$name"));
   // watch input value by passing the name of it
