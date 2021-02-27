@@ -1,6 +1,7 @@
 import React from 'react';
 import { withAuth0 } from "@auth0/auth0-react";
 import { useOperationMethod } from 'react-openapi-client';
+import TextField from '@material-ui/core/TextField';
 // import { useOperation, useOperationMethod } from 'react-openapi-client';
 import { useForm, Controller } from "react-hook-form";
 import DateTimePicker from 'react-datetime-picker'
@@ -41,6 +42,16 @@ const NewEvent = (props) => {
   return (
     <div className="App">
     <form onSubmit={handleSubmit(onSubmit)}>
+
+    <Controller
+        name="event$startDateTime"
+        control={control}
+        defaultValue=""
+        render={({ onChange, value }) =>
+        <TextField onChange={onChange} value={value} id="standard-basic" label="Standard" />}
+      />
+
+
       <label>Name</label>
       <input name="event$name" ref={register({ required: true })} />
       {errors.event$name && <span>Event name is required</span>}
