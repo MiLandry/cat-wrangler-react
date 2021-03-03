@@ -1,7 +1,7 @@
 import React from "react";
 
 class Hero extends React.Component {
-  logo = "https://cdn.auth0.com/blog/auth0-react-sample/assets/logo.png";
+  logo = "http://localhost:4040/icons/cat.svg";
 
   render() {
     return (
@@ -9,20 +9,12 @@ class Hero extends React.Component {
         <img
           className="mb-3 app-logo"
           src={this.logo}
-          alt="React logo"
+          alt="Cat logo"
           width="120"
         />
-        <h1 className="mb-4">React Sample Project</h1>
+        <h1 className="mb-4">Cat Wrangler!</h1>
         <p className="lead">
-          This is a sample application that demonstrates an authentication flow
-          for an SPA, using{" "}
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://auth0.com/docs/quickstart/spa/react"
-          >
-            React
-          </a>
+          Because herding cats is difficult for everyone.
         </p>
       </div>
     );

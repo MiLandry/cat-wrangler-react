@@ -6,9 +6,9 @@ class Footer extends React.Component {
       <footer className="bg-light p-3 text-center">
         <div className="logo" />
         <p>
-          Sample project provided by{" "}
-          <a target="_blank" rel="noopener noreferrer" href="https://auth0.com">
-            Auth0
+          Placeholder footer text{" "}
+          <a target="_blank" rel="noopener noreferrer" href="https://michaellandry.online/">
+            And a cool link
           </a>
         </p>
       </footer>
