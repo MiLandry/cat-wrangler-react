@@ -1,36 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withAuth0 } from "@auth0/auth0-react";
 import { useOperationMethod } from 'react-openapi-client';
 import TextField from '@material-ui/core/TextField';
-// import { useOperation, useOperationMethod } from 'react-openapi-client';
-import { useForm, Controller } from "react-hook-form";
-import DateTimePicker from 'react-datetime-picker'
+import { useForm } from "react-hook-form";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import { usePromiseTracker } from "react-promise-tracker";
+
+import { trackPromise } from 'react-promise-tracker';
+import Loader from 'react-loader-spinner';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+}));
 
 
-const NewEvent = (props) => {
-  const { register, handleSubmit, watch, errors, control } = useForm();
+
+const LoadingIndicator = props => {
+  const { promiseInProgress } = usePromiseTracker();
+return (
+  promiseInProgress &&
+    <div
+      style={{
+        width: "100%",
+        height: "100",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }}
+    >
+      <Loader type="ThreeDots" color="#2BAD60" height="100" width="100" />
+    </div>
+);
+}
+
+const NewEventForm = props => {
+  const { register, handleSubmit, watch, } = useForm();
+  const [formErrors, setformErrors] = useState({})
+
+
   const [createEvent] = useOperationMethod('addEvent');
-  // const [createEvent, { loading, response, error }] = useOperationMethod('addEvent');
   const onSubmit = data => {
     console.log(data);
+    data.event$startDateTime = data.event$startDateTime + ":00.000+00:00"
+    trackPromise(
     createEvent(null, {
       "startDateTime": data.event$startDateTime,
       "name": data.event$name,
       "id": 0
     })
+    .then(result => {
+      console.log('result', result)
+    })
+    .catch (err => {
+      console.log('err', err)
+      setformErrors({
+        ...formErrors,
+        network : true,
+      })
+    })
+    )
 
   }
 
-
-  // const cb = () => {
-  //   // debugger
-  //   console.log('data')
-  //   createEvent(null, {
-  //     "startDateTime": "2000-01-23T04:56:07.000+00:00",
-  //     "name": "board game christmas get together",
-  //     "id": 0
-  //   })
-  // }
+  const classes = useStyles();
 
   console.log(watch("event$name"));
   // watch input value by passing the name of it
@@ -38,65 +76,56 @@ const NewEvent = (props) => {
 // date
 // start time
 // end time (optional)
+const { promiseInProgress } = usePromiseTracker();
+
+
+
+
 
   return (
-    <div className="App">
-    <form onSubmit={handleSubmit(onSubmit)}>
+    !promiseInProgress &&
+<form className={classes.root} noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
+  {formErrors.network &&
+  (
+    <p>Unable to create new event. Check your internet connection or try again later.</p>
+  )}
 
-    <Controller
-        name="event$startDateTime"
-        control={control}
-        defaultValue=""
-        render={({ onChange, value }) =>
-        <TextField onChange={onChange} value={value} id="standard-basic" label="Standard" />}
+      <TextField
+      name="event$name"
+      id="standard-basic"
+      label="Event name"
+      inputRef={register({required : true})}
       />
+  <br/>
 
-
-      <label>Name</label>
-      <input name="event$name" ref={register({ required: true })} />
-      {errors.event$name && <span>Event name is required</span>}
-      <label>Start date</label>
-      <Controller
+      <TextField
         name="event$startDateTime"
-        control={control}
-        defaultValue=""
-        render={({ onChange, value }) => <DateTimePicker onChange={onChange} value={value} />}
+        id="startDateTime"
+        label="Start time"
+        type="datetime-local"
+        inputRef={register({required : true})}
+        InputLabelProps={{
+          shrink: true,
+        }}
       />
+  <br/>
+  <br/>
+  <Button type="submit" size="large" color="primary" variant="contained">
+    Submit
+  </Button >
+</form>
+  )
+}
 
-      {errors.event$startDateTime && <span>Pick a start time</span>}
-      <input type="submit" />
-    </form>
 
+const NewEvent = (props) => {
+  return (
+
+    <div id="newFormPage">
+      <LoadingIndicator/>
+      <NewEventForm />
   </div>
 
   );
 };
 export default withAuth0(NewEvent);
-
-
-
-
-// import React from "react";
-// import { useForm } from "react-hook-form";
-
-// export default function App() {
-//   const { register, handleSubmit, watch, errors } = useForm();
-//   const onSubmit = data => console.log(data);
-
-//   console.log(watch("example")); // watch input value by passing the name of it
-
-//   return (
-//     {/* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
-//     <form onSubmit={handleSubmit(onSubmit)}>
-//     {/* register your input into the hook by invoking the "register" function */}
-//       <input name="example" defaultValue="test" ref={register} />
-
-//       {/* include validation with required or other standard HTML validation rules */}
-//       <input name="exampleRequired" ref={register({ required: true })} />
-//       {/* errors will return when field validation fails  */}
-//       {errors.exampleRequired && <span>This field is required</span>}
-
-//       <input type="submit" />
-//     </form>
-//   );
-// }
