@@ -20,15 +20,22 @@ const useStyles = makeStyles((theme) => ({
 
 const NewEventForm = ({ history }) => {
   const classes = useStyles();
-  const { register, handleSubmit, control, watch } = useForm();
+  const { register, handleSubmit, control } = useForm();
   const [createEvent] = useOperationMethod("addEvent");
 
-  const [formErrors, setformErrors] = useState({});
+  const [formErrors, setFormErrors] = useState({});
 
-  const onError = (errors, event) => console.log(errors, event);
+  const onError = (errors, event) => {
+    console.log("Errors: ", errors);
+    console.log("Event: ", event);
+    if (errors.eventName.message.length === 0) {
+      setFormErrors({ ...formErrors, nameNull: true });
+    }
+  };
 
   const onSubmit = (data) => {
     console.log(data);
+    console.log(formErrors);
     data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
     trackPromise(
       createEvent(null, {
@@ -43,7 +50,7 @@ const NewEventForm = ({ history }) => {
         })
         .catch((err) => {
           console.log("err", err);
-          setformErrors({
+          setFormErrors({
             ...formErrors,
             network: true,
           });
@@ -78,13 +85,19 @@ const NewEventForm = ({ history }) => {
           control={control}
           defaultValue=""
           rules={{ required: true }}
-          render={{value, onChange, onBlur} => (
+          render={({ value, onChange, onBlur }) => (
             <TextField
+              error={formErrors.nameNull ? true : false}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
-              label="Event Name"
-              id="standard-basic"
+              label={formErrors.nameNull ? "Event Name" : "Event Name"}
+              id={
+                formErrors.nameNull
+                  ? "standard-error-helper-text"
+                  : "standard-basic"
+              }
+              helperText={formErrors.nameNull ? "Required Field" : ""}
             />
           )}
         />
