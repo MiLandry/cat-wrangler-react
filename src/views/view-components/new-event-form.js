@@ -8,6 +8,7 @@ import { trackPromise } from "react-promise-tracker";
 import { makeStyles } from "@material-ui/core/styles";
 import { usePromiseTracker } from "react-promise-tracker";
 
+// Required by Material UI
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
@@ -18,44 +19,47 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewEventForm = ({ history }) => {
+  const classes = useStyles();
   const { register, handleSubmit, watch } = useForm();
+  const [createEvent] = useOperationMethod("addEvent");
+
   const [formErrors, setformErrors] = useState({});
-  const [formData, setFormData] = useState({
+  const [formValues, setFormValues] = useState({
     eventName: "",
     startDate: "",
     endDate: "",
   });
 
-  const [createEvent] = useOperationMethod("addEvent");
-
-
-  const onSubmit = (data) => {
-    console.log(data);
-    data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
-    trackPromise(
-      createEvent(null, {
-        startDateTime: data.event$startDateTime,
-        name: data.event$name,
-        id: 0,
-      })
-        .then((result) => {
-          console.log("result", result);
-          history.push("/success");
-          //redirect user to success view
-        })
-        .catch((err) => {
-          console.log("err", err);
-          setformErrors({
-            ...formErrors,
-            network: true,
-          });
-        })
-    );
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({ ...formValues, [name]: value });
   };
 
   const onError = (errors, event) => console.log(errors, event);
 
-  const classes = useStyles();
+  const onSubmit = (data) => {
+    console.log(data);
+    // data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
+    // trackPromise(
+    //   createEvent(null, {
+    //     startDateTime: data.event$startDateTime,
+    //     name: data.event$name,
+    //     id: 0,
+    //   })
+    //     .then((result) => {
+    //       console.log("result", result);
+    //       history.push("/success");
+    //       //redirect user to success view
+    //     })
+    //     .catch((err) => {
+    //       console.log("err", err);
+    //       setformErrors({
+    //         ...formErrors,
+    //         network: true,
+    //       });
+    //     })
+    // );
+  };
 
   console.log(watch("event$name"));
   // watch input value by passing the name of it
@@ -81,7 +85,9 @@ const NewEventForm = ({ history }) => {
         )}
 
         <TextField
-          name="event$name"
+          name="eventName"
+          onChange={handleInputChange}
+          value={formValues.eventName}
           id="standard-basic"
           label="Event name"
           inputRef={register({ required: true })}
@@ -89,7 +95,9 @@ const NewEventForm = ({ history }) => {
         <br />
 
         <TextField
-          name="event$startDateTime"
+          name="startDateTime"
+          onChange={handleInputChange}
+          value={formValues.startDate}
           id="startDateTime"
           label="Start time"
           type="datetime-local"
