@@ -26,8 +26,8 @@ const NewEventForm = ({ history }) => {
   const [formErrors, setformErrors] = useState({});
   const [formValues, setFormValues] = useState({
     eventName: "",
-    startDate: "",
-    endDate: "",
+    event$startDateTime: "",
+    event$endDateTime: "",
   });
 
   const handleInputChange = (event) => {
@@ -39,29 +39,29 @@ const NewEventForm = ({ history }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
-    // trackPromise(
-    //   createEvent(null, {
-    //     startDateTime: data.event$startDateTime,
-    //     name: data.event$name,
-    //     id: 0,
-    //   })
-    //     .then((result) => {
-    //       console.log("result", result);
-    //       history.push("/success");
-    //       //redirect user to success view
-    //     })
-    //     .catch((err) => {
-    //       console.log("err", err);
-    //       setformErrors({
-    //         ...formErrors,
-    //         network: true,
-    //       });
-    //     })
-    // );
+    data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
+    trackPromise(
+      createEvent(null, {
+        startDateTime: data.event$startDateTime,
+        name: data.event$name,
+        id: 0,
+      })
+        .then((result) => {
+          console.log("result", result);
+          history.push("/success");
+          //redirect user to success view
+        })
+        .catch((err) => {
+          console.log("err", err);
+          setformErrors({
+            ...formErrors,
+            network: true,
+          });
+        })
+    );
   };
 
-  console.log(watch("event$name"));
+  // console.log(watch("event$name"));
   // watch input value by passing the name of it
   //   Name,
   // date
@@ -95,11 +95,24 @@ const NewEventForm = ({ history }) => {
         <br />
 
         <TextField
-          name="startDateTime"
+          name="event$startDateTime"
           onChange={handleInputChange}
-          value={formValues.startDate}
+          value={formValues.event$startDateTime}
           id="startDateTime"
-          label="Start time"
+          label="Start Date"
+          type="datetime-local"
+          inputRef={register({ required: true })}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <br />
+        <TextField
+          name="event$endDateTime"
+          onChange={handleInputChange}
+          value={formValues.event$endDateTime}
+          id="endDateTime"
+          label="End Date"
           type="datetime-local"
           inputRef={register({ required: true })}
           InputLabelProps={{
