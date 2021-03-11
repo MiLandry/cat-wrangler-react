@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NewEventForm = ({ history }) => {
   const classes = useStyles();
-  const { register, handleSubmit, control } = useForm();
+  const { handleSubmit, control } = useForm();
   const [createEvent] = useOperationMethod("addEvent");
 
   const [formErrors, setFormErrors] = useState({});
@@ -32,9 +32,15 @@ const NewEventForm = ({ history }) => {
     errors.eventName?.message.length === 0
       ? setFormErrors({ ...formErrors, nameNull: true })
       : setFormErrors({ ...formErrors, nameNull: false });
+    errors.event$startDateTime?.message.length === 0
+      ? setFormErrors({ ...formErrors, startDateTimeNull: true })
+      : setFormErrors({ ...formErrors, startDateTimeNull: false });
   };
 
   const onSubmit = (data) => {
+    // setFormErrors((error) => {
+    //   console.log(error);
+    // })
     console.log(data);
     console.log(formErrors);
     data.event$startDateTime = data.event$startDateTime + ":00.000+00:00";
@@ -103,27 +109,53 @@ const NewEventForm = ({ history }) => {
           )}
         />
         <br />
-
-        <TextField
+        <Controller
           name="event$startDateTime"
-          id="startDateTime"
-          label="Start Date"
-          type="datetime-local"
-          inputRef={register({ required: true })}
-          InputLabelProps={{
-            shrink: true,
-          }}
+          control={control}
+          defaultValue=""
+          rules={{ required: true }}
+          render={({ value, onChange, onBlur }) => (
+            <TextField
+              error={formErrors.startDateTimeNull ? true : false}
+              value={value}
+              type="datetime-local"
+              onChange={onChange}
+              onBlur={onBlur}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              label={formErrors.startDateTimeNull ? "Start Date" : "Start Date"}
+              id="startDateTime"
+              helperText={formErrors.startDateTimeNull ? "Required Field" : ""}
+            />
+          )}
         />
         <br />
-        <TextField
+        <Controller
           name="event$endDateTime"
-          id="endDateTime"
-          label="End Date"
-          type="datetime-local"
-          inputRef={register({ required: true })}
-          InputLabelProps={{
-            shrink: true,
-          }}
+          control={control}
+          defaultValue=""
+          render={({ value, onChange, onBlur }) => (
+            <TextField
+              error={formErrors.endDateTimeBeforeStart ? true : false}
+              value={value}
+              type="datetime-local"
+              onChange={onChange}
+              onBlur={onBlur}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              label={
+                formErrors.endDateTimeBeforeStart ? "End Date" : "End Date"
+              }
+              id="endDateTime"
+              helperText={
+                formErrors.endDateTimeBeforeStart
+                  ? "End Date Before Start Date"
+                  : ""
+              }
+            />
+          )}
         />
         <br />
         <br />
