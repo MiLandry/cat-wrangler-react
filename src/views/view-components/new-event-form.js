@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { useOperationMethod } from "react-openapi-client";
 import TextField from "@material-ui/core/TextField";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import { trackPromise } from "react-promise-tracker";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,20 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 const NewEventForm = ({ history }) => {
   const classes = useStyles();
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, control, watch } = useForm();
   const [createEvent] = useOperationMethod("addEvent");
 
   const [formErrors, setformErrors] = useState({});
-  const [formValues, setFormValues] = useState({
-    eventName: "",
-    event$startDateTime: "",
-    event$endDateTime: "",
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
 
   const onError = (errors, event) => console.log(errors, event);
 
@@ -83,21 +73,25 @@ const NewEventForm = ({ history }) => {
             again later.
           </p>
         )}
-
-        <TextField
+        <Controller
           name="eventName"
-          onChange={handleInputChange}
-          value={formValues.eventName}
-          id="standard-basic"
-          label="Event name"
-          inputRef={register({ required: true })}
+          control={control}
+          defaultValue=""
+          rules={{ required: true }}
+          render={{value, onChange, onBlur} => (
+            <TextField
+              value={value}
+              onChange={onChange}
+              onBlur={onBlur}
+              label="Event Name"
+              id="standard-basic"
+            />
+          )}
         />
         <br />
 
         <TextField
           name="event$startDateTime"
-          onChange={handleInputChange}
-          value={formValues.event$startDateTime}
           id="startDateTime"
           label="Start Date"
           type="datetime-local"
@@ -109,8 +103,6 @@ const NewEventForm = ({ history }) => {
         <br />
         <TextField
           name="event$endDateTime"
-          onChange={handleInputChange}
-          value={formValues.event$endDateTime}
           id="endDateTime"
           label="End Date"
           type="datetime-local"
