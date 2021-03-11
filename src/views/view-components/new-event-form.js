@@ -25,12 +25,13 @@ const NewEventForm = ({ history }) => {
 
   const [formErrors, setFormErrors] = useState({});
 
+  // If there is an error on submit this function runs.
   const onError = (errors, event) => {
     console.log("Errors: ", errors);
     console.log("Event: ", event);
-    if (errors.eventName.message.length === 0) {
-      setFormErrors({ ...formErrors, nameNull: true });
-    }
+    errors.eventName?.message.length === 0
+      ? setFormErrors({ ...formErrors, nameNull: true })
+      : setFormErrors({ ...formErrors, nameNull: false });
   };
 
   const onSubmit = (data) => {
