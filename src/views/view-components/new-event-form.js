@@ -27,14 +27,19 @@ const NewEventForm = ({ history }) => {
 
   // If there is an error on submit this function runs.
   const onError = (errors, event) => {
+
     console.log("Errors: ", errors);
     console.log("Event: ", event);
-    errors.eventName?.message.length === 0
-      ? setFormErrors({ ...formErrors, nameNull: true })
-      : setFormErrors({ ...formErrors, nameNull: false });
+
+    setFormErrors({})
     errors.event$startDateTime?.message.length === 0
       ? setFormErrors({ ...formErrors, startDateTimeNull: true })
       : setFormErrors({ ...formErrors, startDateTimeNull: false });
+    errors.eventName?.message.length === 0
+      ? setFormErrors({ ...formErrors, nameNull: true })
+      : setFormErrors({ ...formErrors, nameNull: false });
+
+    console.log(formErrors);
   };
 
   const onSubmit = (data) => {
@@ -94,16 +99,12 @@ const NewEventForm = ({ history }) => {
           rules={{ required: true }}
           render={({ value, onChange, onBlur }) => (
             <TextField
-              error={formErrors.nameNull ? true : false}
+              error={formErrors.nameNull}
               value={value}
               onChange={onChange}
               onBlur={onBlur}
-              label={formErrors.nameNull ? "Event Name" : "Event Name"}
-              id={
-                formErrors.nameNull
-                  ? "standard-error-helper-text"
-                  : "standard-basic"
-              }
+              label="Event Name*"
+              id="eventName"
               helperText={formErrors.nameNull ? "Required Field" : ""}
             />
           )}
@@ -116,7 +117,7 @@ const NewEventForm = ({ history }) => {
           rules={{ required: true }}
           render={({ value, onChange, onBlur }) => (
             <TextField
-              error={formErrors.startDateTimeNull ? true : false}
+              error={formErrors.startDateTimeNull}
               value={value}
               type="datetime-local"
               onChange={onChange}
@@ -124,7 +125,7 @@ const NewEventForm = ({ history }) => {
               InputLabelProps={{
                 shrink: true,
               }}
-              label={formErrors.startDateTimeNull ? "Start Date" : "Start Date"}
+              label="Start Date*"
               id="startDateTime"
               helperText={formErrors.startDateTimeNull ? "Required Field" : ""}
             />
