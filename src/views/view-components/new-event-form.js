@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewEventForm = ({history}) => {
-  const { register, handleSubmit, watch, } = useForm();
+  const { register, handleSubmit, watch, errors } = useForm();
   const [formErrors, setformErrors] = useState({})
-
 
   const [createEvent] = useOperationMethod('addEvent');
   const onSubmit = data => {
@@ -51,16 +50,7 @@ const NewEventForm = ({history}) => {
   const classes = useStyles();
 
   console.log(watch("event$name"));
-  // watch input value by passing the name of it
-//   Name,
-// date
-// start time
-// end time (optional)
 const { promiseInProgress } = usePromiseTracker();
-
-
-
-
 
   return (
     !promiseInProgress &&
@@ -73,17 +63,21 @@ const { promiseInProgress } = usePromiseTracker();
       <TextField
       name="event$name"
       id="standard-basic"
-      label="Event name"
-      inputRef={register({required : true})}
+      label="Event Name*"
+      error={'event$name' in errors}
+      helperText={errors.event$name?.message}
+      inputRef={register({required : "Field is required"})}
       />
   <br/>
 
       <TextField
         name="event$startDateTime"
         id="startDateTime"
-        label="Start time"
+        label="Start Time*"
         type="datetime-local"
-        inputRef={register({required : true})}
+        error={'event$startDateTime' in errors}
+        helperText={errors.event$startDateTime?.message}
+        inputRef={register({required : "Field is required"})}
         InputLabelProps={{
           shrink: true,
         }}
